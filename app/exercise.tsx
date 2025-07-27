@@ -27,6 +27,27 @@ export default function ExerciseScreen() {
                     Istu mukavasti ja sulje silmäsi. Keskity kehosi tuntemuksiin. Tunne jalkasi, kätesi, selkäsi ja pääsi.
                     Anna jännityksen haihtua ja tunne rentoutumisen leviävän koko kehoosi.</Text>
             </View>
+
+            <View style={styles.card}>
+                <Text style={styles.exerciseTitle}>4. Luonnon tarkkailu</Text>
+                <Image source={require('@/assets/images/nature.png')} style={styles.image} />
+                <Text style={styles.description}>
+                    Mene ulos luontoon, jos mahdollista. Ihaile ympäristöäsi, kuuntele lintujen laulua ja tunne tuulen kasvoillasi.</Text>
+            </View>
+
+            <View style={styles.card}>
+                <Text style={styles.exerciseTitle}>5. Kiitollisuusharjoitus</Text>
+                <Image source={require('@/assets/images/gratitude.png')} style={styles.image} />
+                <Text style={styles.description}>
+                    Kirjoita ylös kolme asiaa, joista olet kiitollinen tänään. Tämä auttaa sinua keskittymään positiivisiin asioihin.</Text>
+            </View>
+
+            <View style={styles.card}>
+                <Text style={styles.exerciseTitle}>6. Mindfulness-kävely</Text>
+                <Image source={require('@/assets/images/mindfulness.png')} style={styles.image} />
+                <Text style={styles.description}>
+                    Kävele hitaasti ja tietoisesti. Keskity jokaiseen askeleeseen, tunteeseen ja ääneen ympärilläsi.</Text>
+            </View>
         </ScrollView>
     );
 }
