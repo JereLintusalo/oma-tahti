@@ -65,4 +65,43 @@ export const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     fontWeight: '600',
   },
+  scrollContainer: {
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  infoSection: {
+    marginTop: 40,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 12,
+    width: '100%',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  infoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#333',
+  },
+  infoText: {
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+    color: '#555',
+  },
+  footer: {
+    marginTop: 40,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 14,
+    color: '#777',
+    marginVertical: 2,
+  },
 });
