@@ -17,6 +17,9 @@ export default function IndexScreen() {
   return (
     <LinearGradient colors={['#e0f7fa', '#ffffff']} style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Oma Tahti</Text>
+        </View>
         <Image
           source={require('@/assets/images/peace.png')}
           style={styles.image}

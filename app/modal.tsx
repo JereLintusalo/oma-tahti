@@ -44,11 +44,17 @@ export default function ModalScreen({ onClose }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 20,
-    justifyContent: 'center',
+    backgroundColor: 'white',
+    padding: 30,
+    borderRadius: 20,
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 6,
   },
   scrollContent: {
     paddingVertical: 40,

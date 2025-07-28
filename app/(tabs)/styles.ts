@@ -106,4 +106,18 @@ export const styles = StyleSheet.create({
     color: '#777',
     marginVertical: 2,
   },
+  header: {
+    marginTop: 40,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 36,
+    fontWeight: '800',
+    color: '#4b7bec',
+    textAlign: 'center',
+    textShadowColor: '#aaa',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
 });
