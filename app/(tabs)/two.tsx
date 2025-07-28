@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import { Ionicons } from '@expo/vector-icons';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 interface Task {
   id: string;
@@ -22,6 +23,29 @@ interface Task {
 export default function TabTwoScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [input, setInput] = useState('');
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [cheerMessage, setCheerMessage] = useState('');
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState('');
+  const confettiRef = useRef<ConfettiCannon>(null);
+
+  const cheerMessages = [
+    'Hyvin tehty!',
+    'Mahtavaa työtä!',
+    'Jes, yksi juttu vähemmän!',
+    'Loistavaa edistystä!',
+    'Olet huippu!',
+    'Jatka samaan malliin!',
+    'Tämä on upeaa!',
+    'Teit sen!',
+    'Olet liekeissä 🔥',
+    '💪 Upea suoritus!',
+  ];
+
+  function getRandomCheer(): string {
+    const index = Math.floor(Math.random() * cheerMessages.length);
+    return cheerMessages[index];
+  }
 
   useEffect(() => {
     loadTasks();
@@ -70,21 +94,46 @@ export default function TabTwoScreen() {
   };
 
   const deleteTask = (id: string) => {
-    setTasks(prev => prev.filter(task => task.id !== id));
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    setTasks(updatedTasks);
+
+    const randomMsg = cheerMessages[Math.floor(Math.random() * cheerMessages.length)];
+    setMessage(randomMsg);
+    setShowMessage(true);
+    confettiRef.current?.start();
+
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 2500);
   };
 
-  const renderItem = ({ item}: { item: Task }) => (
-    <Animatable.View animation="fadeIn" duration={500}>
-      <View style={styles.taskItem}>
-        <TouchableOpacity onPress={() => toggleTask(item.id)} style={{ flex: 1 }}>
-          <Text style={[styles.taskText, item.done && styles.taskDone]}>
-            {item.text}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteTask(item.id)}>
-          <Ionicons name="trash-outline" size={24} color="#ff3b30" />
-        </TouchableOpacity>
-      </View>
+  const renderItem = ({ item }: { item: Task }) => (
+    <Animatable.View
+      animation="fadeInUp"
+      duration={400}
+      style={styles.taskItem}
+    >
+      <TouchableOpacity onPress={() => toggleTask(item.id)} style={{ flex: 1 }}>
+        <Text style={[styles.taskText, item.done && styles.taskDone]}>
+          {item.text}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          // pieni poistoanimaatio
+          setTasks(prev =>
+            prev.filter(task => task.id !== item.id)
+          );
+          setShowConfetti(true);
+          setCheerMessage(getRandomCheer());
+          setTimeout(() => {
+            setShowConfetti(false);
+            setCheerMessage('');
+          }, 2500);
+        }}
+      >
+        <Ionicons name="trash-outline" size={24} color="#ff3b30" />
+      </TouchableOpacity>
     </Animatable.View>
   );
 
@@ -107,11 +156,38 @@ export default function TabTwoScreen() {
         </TouchableOpacity>
       </View>
 
+      {showConfetti && (
+        <>
+          <ConfettiCannon count={50} origin={{ x: -10, y: -10 }} fadeOut />
+          <Animatable.Text
+            animation="fadeInDown"
+            duration={600}
+            style={styles.cheerText}
+          >
+            {cheerMessage}
+          </Animatable.Text>
+        </>
+      )}
+
+
       <FlatList
         data={tasks}
         keyExtractor={item => item.id}
         renderItem={renderItem}
-        contentContainerStyle={styles.taskList}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#f7f8fc' }}
+      />
+      {showMessage && (
+        <Animatable.View animation="fadeInDown" style={styles.messageBox}>
+          <Text style={styles.messageText}>{message}</Text>
+        </Animatable.View>
+      )}
+
+      <ConfettiCannon
+        count={100}
+        origin={{ x: -10, y: -10 }}
+        autoStart={false}
+        ref={confettiRef}
+        fadeOut
       />
     </KeyboardAvoidingView>
   );
@@ -123,11 +199,11 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-    color: '#333',
+    color: '#2c3e50',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -135,18 +211,19 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 14,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
-    height: 44,
+    borderColor: '#ddd',
+    height: 48,
+    fontSize: 16,
   },
   addButton: {
-    backgroundColor: '#4b7bec',
-    paddingHorizontal: 16,
-    marginLeft: 8,
-    borderRadius: 8,
+    backgroundColor: '#32a852',
+    paddingHorizontal: 20,
+    marginLeft: 10,
+    borderRadius: 10,
     justifyContent: 'center',
   },
   addButtonText: {
@@ -158,13 +235,18 @@ const styles = StyleSheet.create({
   },
   taskItem: {
     backgroundColor: '#fff',
-    padding: 12,
+    padding: 14,
     marginVertical: 6,
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#eee',
     flexDirection: 'row',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   taskText: {
     fontSize: 16,
@@ -173,5 +255,29 @@ const styles = StyleSheet.create({
   taskDone: {
     textDecorationLine: 'line-through',
     color: '#999',
+  },
+  messageBox: {
+    position: 'absolute',
+    bottom: 100,
+    left: '100%',
+    right: '100%',
+    backgroundColor: '#fff3cd',
+    padding: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 5,
+  },
+  messageText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#856404',
+  },
+  cheerText: {
+    fontSize: 22,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#2e7d32',
+    marginBottom: 16,
+    marginTop: 10,
   },
 });
