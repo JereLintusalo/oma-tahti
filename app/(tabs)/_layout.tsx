@@ -6,8 +6,9 @@ import { Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { ThemeProvider, useTheme } from './theme-context';
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
+// Ikoni tabiin
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
@@ -15,17 +16,32 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export default function TabLayout() {
+// ThemeProvider käärii koko sovelluksen
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <TabLayout />
+    </ThemeProvider>
+  );
+}
+
+// Tabien asettelu
+function TabLayout() {
   const colorScheme = useColorScheme();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-      }}>
+        tabBarStyle: {
+          backgroundColor: isDark ? '#1c1c1e' : '#fff',
+          borderTopColor: isDark ? '#333' : '#ccc',
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -52,6 +68,13 @@ export default function TabLayout() {
         options={{
           title: 'Tehtävälista',
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="three"
+        options={{
+          title: 'Profiili',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>
