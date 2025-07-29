@@ -28,13 +28,6 @@ export default function ModalScreen({ onClose }: Props) {
         </Text>
 
         {/* Lisää halutessasi muita ohjeita, linkkejä tai kuvia */}
-
-        {/* Esim. Sulje-nappi, jos modaalin sulkeminen on tarpeen */}
-        {onClose && (
-          <TouchableOpacity style={styles.button} onPress={onClose}>
-            <Text style={styles.buttonText}>Sulje</Text>
-          </TouchableOpacity>
-        )}
       </ScrollView>
 
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

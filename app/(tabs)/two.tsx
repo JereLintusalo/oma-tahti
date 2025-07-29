@@ -132,7 +132,7 @@ export default function TabTwoScreen() {
           }, 2500);
         }}
       >
-        <Ionicons name="trash-outline" size={24} color="#ff3b30" />
+        <Ionicons name="checkmark-circle-outline" size={24} color="#0080000" />
       </TouchableOpacity>
     </Animatable.View>
   );
