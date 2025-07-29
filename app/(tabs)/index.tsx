@@ -3,10 +3,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 import { useFonts } from 'expo-font';
 import { useRouter } from 'expo-router';
-import { styles } from './styles'; // siirretään tyylit omaan tiedostoon
+import { createStyles } from './styles'; // siirretään tyylit omaan tiedostoon
+import { useTheme } from './theme-context';
 
 export default function IndexScreen() {
   const router = useRouter();
+
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const styles = createStyles(isDark);
 
   const [fontsLoaded] = useFonts({
     Poppins: require('@/assets/fonts/Poppins-Regular.ttf'),

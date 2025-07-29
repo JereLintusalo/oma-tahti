@@ -5,6 +5,7 @@ type Theme = 'light' | 'dark';
 interface ThemeContextProps {
   theme: Theme;
   toggleTheme: () => void;
+  setTheme: (theme: Theme) => void; 
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
@@ -13,11 +14,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>('light');
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -30,4 +31,5 @@ export const useTheme = (): ThemeContextProps => {
   }
   return context;
 };
+
 
